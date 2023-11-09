@@ -12,8 +12,7 @@ class MotorController:
         self._bus = smbus2.SMBus(1)
         self._address: int = address
         self._buffer_size: int = 16
-        self._controller_success_code: int = 0b00000000
-        self._controller_error_code: int = 0b00000001
+        self._controller_error_code: int = 0b00000000
         self._controller_null_code: int = 0b11111111
 
     def flush_buffer(self):
@@ -36,8 +35,10 @@ class MotorController:
             pass
         try:
             self._bus.write_byte(self._address, 0)
-            response = self._bus.read_byte(self._address)
-            return response == self._controller_success_code
+            response = self._bus.read_i2c_block_data(self._address, 0, 2)
+            code = response[0] << 8 | response[1]
+            print(code)
+            return code != self._controller_error_code
         except TimeoutError or OSError as e:
             print(f"Failed to get response code from controller: {e}")
             self.flush_buffer()

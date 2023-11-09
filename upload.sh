@@ -1,3 +1,4 @@
-ssh pi@192.168.1.17 "rm -rf /home/pi/software"
-scp -r src pi@192.168.1.17:/home/pi/software
-ssh pi@192.168.1.17 "python3 /home/pi/software/main.py"
+PI="pi@192.168.1.38"
+ssh $PI "rm -rf /home/pi/software"
+scp -r src "${PI}:/home/pi/software"
+ssh $PI "python3 /home/pi/software/main.py"
