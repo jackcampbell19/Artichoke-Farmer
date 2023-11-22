@@ -37,7 +37,6 @@ class MotorController:
             self._bus.write_byte(self._address, 0)
             response = self._bus.read_i2c_block_data(self._address, 0, 2)
             code = response[0] << 8 | response[1]
-            print(code)
             return code != self._controller_error_code
         except TimeoutError or OSError as e:
             print(f"Failed to get response code from controller: {e}")
